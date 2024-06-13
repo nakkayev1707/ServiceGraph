@@ -3,7 +3,7 @@ using QuickGraph.Graphviz;
 
 namespace ServiceGraph.Graph;
 
-public class DependencyGraphBuilder
+internal class DependencyGraphBuilder
 {
     public void BuildGraph(Dictionary<Type, List<Type>> dependencies)
     {
