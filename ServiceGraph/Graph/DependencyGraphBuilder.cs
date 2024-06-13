@@ -21,6 +21,17 @@ internal class DependencyGraphBuilder
         }
         
         var graphviz = new GraphvizAlgorithm<Type, Edge<Type>>(graph);
+        
+        graphviz.FormatVertex += (sender, args) =>
+        {
+            args.VertexFormatter.Label = args.Vertex.FullName;
+        };
+
+        graphviz.FormatEdge += (sender, args) =>
+        {
+            args.EdgeFormatter.Label.Value = string.Empty;
+        };
+        
         string dot = graphviz.Generate();
         File.WriteAllText("dependencyGraph.dot", dot);
     }
