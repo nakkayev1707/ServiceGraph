@@ -1,11 +1,20 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using ServiceGraph.Graph;
 
 namespace ServiceGraph.Core;
 
 internal class DependencyResolver
 {
-    public Dictionary<Type, List<Type>> Resolve(IEnumerable<ServiceDescriptor> serviceDescriptors)
+    public void AddResolver(IServiceCollection services)
+    {
+        Dictionary<Type, List<Type>> servicesDict = Resolve(services);
+
+        var dependencyGraphBuilder = new DependencyGraphBuilder();
+        dependencyGraphBuilder.BuildGraph(servicesDict);
+    }
+    
+    private Dictionary<Type, List<Type>> Resolve(IEnumerable<ServiceDescriptor> serviceDescriptors)
     {
         var dependencies = new Dictionary<Type, List<Type>>();
         foreach (ServiceDescriptor serviceDescriptor in serviceDescriptors)
