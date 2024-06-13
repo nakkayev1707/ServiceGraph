@@ -5,7 +5,7 @@ namespace ServiceGraph.Graph;
 
 internal class DependencyGraphBuilder
 {
-    public void BuildGraph(Dictionary<Type, List<Type>> dependencies)
+    public GraphvizAlgorithm<Type, Edge<Type>> BuildGraph(Dictionary<Type, List<Type>> dependencies)
     {
         var graph = new AdjacencyGraph<Type, Edge<Type>>();
 
@@ -31,8 +31,7 @@ internal class DependencyGraphBuilder
         {
             args.EdgeFormatter.Label.Value = string.Empty;
         };
-        
-        string dot = graphviz.Generate();
-        File.WriteAllText("dependencyGraph.dot", dot);
+
+        return graphviz;
     }
 }
