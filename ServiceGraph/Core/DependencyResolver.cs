@@ -6,6 +6,13 @@ namespace ServiceGraph.Core;
 
 internal class DependencyResolver
 {
+    private ServiceGraphOption? _graphOption;
+
+    public void ApplyOptions(ServiceGraphOption? option)
+    {
+        _graphOption = option;
+    }
+    
     public void AddResolver(IServiceCollection services)
     {
         Dictionary<Type, List<Type>> servicesDict = Resolve(services);
