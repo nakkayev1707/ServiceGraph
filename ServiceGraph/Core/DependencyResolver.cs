@@ -13,10 +13,10 @@ internal class DependencyResolver
     private GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
     private readonly GraphVisualizer _graphVisualizer = new();
 
-    public void ApplyOptions(ServiceGraphOption? option)
+    public void ApplyOptions(ServiceGraphOption option)
     {
-        _graphOption = option;
-        _graphVisualizer.SetOptions();
+        _graphOption = option ?? throw new ArgumentNullException(nameof(option));
+        _graphVisualizer.SetOptions(option.VisualizationOption);
     }
     
     public void AddResolver(IServiceCollection services)

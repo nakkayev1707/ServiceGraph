@@ -9,7 +9,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddServiceGraph(new ServiceGraphOption
 {
-    
+    Namespaces = new []
+    {
+        "ServiceGraphUsage.Services", 
+        "ServiceGraphUsage.Services.Abstract"
+    }
 });
 
 var app = builder.Build();
