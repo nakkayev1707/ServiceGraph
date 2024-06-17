@@ -14,6 +14,8 @@ public class GraphVisualizer
 
     public void Visualize(GraphvizAlgorithm<Type, Edge<Type>> graphviz)
     {
-        throw new NotImplementedException();
+        // TEMP SOLUTION, SHOULD BE EXTENDED
+        string dot = graphviz.Generate();
+        File.WriteAllText("dependencyGraph.dot", dot);
     }
 }
