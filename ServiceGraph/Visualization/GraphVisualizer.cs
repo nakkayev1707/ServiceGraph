@@ -7,6 +7,12 @@ namespace ServiceGraph.Visualization;
 public class GraphVisualizer
 {
     private GraphVisualizationOption? _visualizationOption;
+    private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
+
+    public GraphVisualizer(GraphvizAlgorithm<Type, Edge<Type>> graphviz)
+    {
+        _graphviz = graphviz;
+    }
 
     public void SetOptions(GraphVisualizationOption optionVisualizationOption)
     {
