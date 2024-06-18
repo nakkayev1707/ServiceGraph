@@ -6,28 +6,28 @@ namespace ServiceGraph.Visualization;
 
 public class GraphVisualizer
 {
-    private GraphVisualizationOption? _visualizationOption;
+    private readonly GraphVisualizationOption? _visualizationOption;
     private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
 
-    public GraphVisualizer(GraphvizAlgorithm<Type, Edge<Type>> graphviz)
+    public GraphVisualizer(GraphvizAlgorithm<Type, Edge<Type>> graphviz, GraphVisualizationOption? visualizationOption)
     {
         _graphviz = graphviz;
-    }
-
-    public void SetOptions(GraphVisualizationOption optionVisualizationOption)
-    {
-        _visualizationOption = optionVisualizationOption;
-    }
-
-    public void Visualize(GraphvizAlgorithm<Type, Edge<Type>> graphviz)
-    {
-        IVisualize visualize = _visualizationOption?.VisualizationMethod switch
+        _visualizationOption = visualizationOption ?? new GraphVisualizationOption
         {
-            VisualizationMethod.Console => new ConsoleVisualization(graphviz),
-            VisualizationMethod.File => new FileVisualization(graphviz),
-            _ => new ConsoleVisualization(graphviz)
+            HighlightIssues = true,
+            VisualizationMethod = VisualizationMethod.Console
+        };
+    }
+
+    public void Visualize()
+    {
+        IVisualize visualizationObj = _visualizationOption?.VisualizationMethod switch
+        {
+            VisualizationMethod.Console => new ConsoleVisualization(_graphviz),
+            VisualizationMethod.File => new FileVisualization(_graphviz),
+            _ => new ConsoleVisualization(_graphviz)
         };
         
-        visualize.Visualize();
+        visualizationObj.Visualize();
     }
 }

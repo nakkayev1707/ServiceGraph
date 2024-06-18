@@ -9,19 +9,17 @@ namespace ServiceGraph.Core;
 internal class DependencyResolver
 {
     private readonly GraphVisualizer _graphVisualizer;
-    private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
 
     public DependencyResolver(IServiceCollection services, ServiceGraphOption? option)
     {
         var builder = new DependencyGraphBuilder();
-        _graphviz = builder.BuildGraph(services, option);
+        GraphvizAlgorithm<Type, Edge<Type>> graphviz = builder.BuildGraph(services, option);
         
-        _graphVisualizer = new GraphVisualizer(_graphviz);
-        if (option != null) _graphVisualizer.SetOptions(option.VisualizationOption);
+        _graphVisualizer = new GraphVisualizer(graphviz, option?.VisualizationOption);
     }
 
     public void Visualize()
     {
-        _graphVisualizer.Visualize(_graphviz);
+        _graphVisualizer.Visualize();
     }
 }
