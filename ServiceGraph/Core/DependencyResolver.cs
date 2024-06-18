@@ -15,12 +15,10 @@ internal class DependencyResolver
 
     public DependencyResolver(IServiceCollection services, ServiceGraphOption? option)
     {
-        Dictionary<Type, List<Type>> servicesDict = Resolve(services);
-
-        var dependencyGraphBuilder = new DependencyGraphBuilder();
-        _graphviz = dependencyGraphBuilder.BuildGraph(servicesDict);
-
         if (option != null) SetOptions(option);
+        
+        Dictionary<Type, List<Type>> servicesDict = Resolve(services);
+        _graphviz = new DependencyGraphBuilder().BuildGraph(servicesDict);
     }
 
     public void Visualize()
