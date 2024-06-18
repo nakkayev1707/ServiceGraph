@@ -3,18 +3,17 @@ using QuickGraph.Graphviz;
 
 namespace ServiceGraph.Visualization.Core;
 
-public class ConsoleVisualization : IVisualize
+public class FileVisualization : IVisualize
 {
     private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
     
-    public ConsoleVisualization( GraphvizAlgorithm<Type, Edge<Type>> graphviz)
+    public FileVisualization(GraphvizAlgorithm<Type, Edge<Type>> graphviz)
     {
         _graphviz = graphviz;
     }
 
     public void Visualize()
     {
-        string dot = _graphviz.Generate();
-        File.WriteAllText("dependencyGraph.dot", dot);
+        throw new NotImplementedException();
     }
 }

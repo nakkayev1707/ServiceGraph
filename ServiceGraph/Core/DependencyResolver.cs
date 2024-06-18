@@ -10,22 +10,28 @@ namespace ServiceGraph.Core;
 internal class DependencyResolver
 {
     private ServiceGraphOption? _graphOption;
-    private GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
     private readonly GraphVisualizer _graphVisualizer = new();
+    private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
 
-    public void ApplyOptions(ServiceGraphOption option)
-    {
-        _graphOption = option ?? throw new ArgumentNullException(nameof(option));
-        _graphVisualizer.SetOptions(option.VisualizationOption);
-    }
-    
-    public void AddResolver(IServiceCollection services)
+    public DependencyResolver(IServiceCollection services, ServiceGraphOption? option)
     {
         Dictionary<Type, List<Type>> servicesDict = Resolve(services);
 
         var dependencyGraphBuilder = new DependencyGraphBuilder();
         _graphviz = dependencyGraphBuilder.BuildGraph(servicesDict);
+
+        if (option != null) ApplyOptions(option);
+    }
+
+    public void Visualize()
+    {
         _graphVisualizer.Visualize(_graphviz);
+    }
+
+    private void ApplyOptions(ServiceGraphOption option)
+    {
+        _graphOption = option ?? throw new ArgumentNullException(nameof(option));
+        _graphVisualizer.SetOptions(option.VisualizationOption);
     }
     
     private Dictionary<Type, List<Type>> Resolve(IEnumerable<ServiceDescriptor> serviceDescriptors)

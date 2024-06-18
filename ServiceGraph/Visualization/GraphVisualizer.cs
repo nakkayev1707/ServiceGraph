@@ -15,18 +15,13 @@ public class GraphVisualizer
 
     public void Visualize(GraphvizAlgorithm<Type, Edge<Type>> graphviz)
     {
-        switch (_visualizationOption?.VisualizationMethod)
+        IVisualize visualize = _visualizationOption?.VisualizationMethod switch
         {
-            case VisualizationMethod.Console:
-            {
-                new ConsoleVisualization(graphviz).Visualize();
-                break;
-            }
-            default:
-            {
-                new ConsoleVisualization(graphviz).Visualize();
-                break;
-            }
-        }
+            VisualizationMethod.Console => new ConsoleVisualization(graphviz),
+            VisualizationMethod.File => new FileVisualization(graphviz),
+            _ => new ConsoleVisualization(graphviz)
+        };
+        
+        visualize.Visualize();
     }
 }
