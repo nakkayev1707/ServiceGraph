@@ -12,8 +12,8 @@ internal class DependencyResolver
 
     public DependencyResolver(IServiceCollection services, ServiceGraphOption? option)
     {
-        var builder = new DependencyGraphBuilder();
-        GraphvizAlgorithm<Type, Edge<Type>> graphviz = builder.BuildGraph(services, option);
+        var builder = new DependencyGraphBuilder(services, option);
+        GraphvizAlgorithm<Type, Edge<Type>> graphviz = builder.BuildGraph();
         
         _graphVisualizer = new GraphVisualizer(graphviz, option?.VisualizationOption);
     }

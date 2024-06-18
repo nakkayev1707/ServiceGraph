@@ -8,9 +8,18 @@ namespace ServiceGraph.Graph;
 
 internal class DependencyGraphBuilder
 {
-    public GraphvizAlgorithm<Type, Edge<Type>> BuildGraph(IServiceCollection services, ServiceGraphOption? graphOption)
+    private readonly IServiceCollection _serviceCollection;
+    private readonly ServiceGraphOption? _graphOption;
+
+    public DependencyGraphBuilder(IServiceCollection serviceCollection, ServiceGraphOption? graphOption)
     {
-        Dictionary<Type, List<Type>> dependencies = ResolveDependencies(services, graphOption);
+        _serviceCollection = serviceCollection;
+        _graphOption = graphOption;
+    }
+    
+    public GraphvizAlgorithm<Type, Edge<Type>> BuildGraph()
+    {
+        Dictionary<Type, List<Type>> dependencies = ResolveDependencies(_serviceCollection, _graphOption);
         
         var graph = new AdjacencyGraph<Type, Edge<Type>>();
 
