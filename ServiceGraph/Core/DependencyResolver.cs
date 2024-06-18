@@ -20,7 +20,7 @@ internal class DependencyResolver
         var dependencyGraphBuilder = new DependencyGraphBuilder();
         _graphviz = dependencyGraphBuilder.BuildGraph(servicesDict);
 
-        if (option != null) ApplyOptions(option);
+        if (option != null) SetOptions(option);
     }
 
     public void Visualize()
@@ -28,7 +28,7 @@ internal class DependencyResolver
         _graphVisualizer.Visualize(_graphviz);
     }
 
-    private void ApplyOptions(ServiceGraphOption option)
+    private void SetOptions(ServiceGraphOption option)
     {
         _graphOption = option ?? throw new ArgumentNullException(nameof(option));
         _graphVisualizer.SetOptions(option.VisualizationOption);
