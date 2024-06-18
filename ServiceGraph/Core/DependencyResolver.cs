@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using QuickGraph;
 using QuickGraph.Graphviz;
 using ServiceGraph.Graph;
-using ServiceGraph.Vizualization;
+using ServiceGraph.Visualization;
 
 namespace ServiceGraph.Core;
 

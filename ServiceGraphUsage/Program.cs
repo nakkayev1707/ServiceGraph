@@ -1,6 +1,6 @@
 using ServiceGraph.Core;
 using ServiceGraph.Extensions;
-using ServiceGraph.Vizualization;
+using ServiceGraph.Visualization;
 using ServiceGraphUsage.Services;
 using ServiceGraphUsage.Services.Abstract;
 

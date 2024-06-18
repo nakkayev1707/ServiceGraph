@@ -1,4 +1,4 @@
-﻿using ServiceGraph.Vizualization;
+﻿using ServiceGraph.Visualization;
 
 namespace ServiceGraph.Core;
 

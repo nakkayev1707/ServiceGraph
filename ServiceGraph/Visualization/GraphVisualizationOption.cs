@@ -1,4 +1,4 @@
-﻿namespace ServiceGraph.Vizualization;
+﻿namespace ServiceGraph.Visualization;
 
 public class GraphVisualizationOption
 {
