@@ -1,5 +1,6 @@
 using ServiceGraph.Core;
 using ServiceGraph.Extensions;
+using ServiceGraph.Vizualization;
 using ServiceGraphUsage.Services;
 using ServiceGraphUsage.Services.Abstract;
 
@@ -22,6 +23,11 @@ builder.Services.AddServiceGraph(new ServiceGraphOption
     {
         "ServiceGraphUsage.Services", 
         "ServiceGraphUsage.Services.Abstract"
+    },
+    VisualizationOption = new GraphVisualizationOption
+    {
+        VisualizationMethod = VisualizationMethod.Console,
+        HighlightIssues = true
     }
 });
 
