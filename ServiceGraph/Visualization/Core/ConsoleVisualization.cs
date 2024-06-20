@@ -1,5 +1,6 @@
 ﻿using QuickGraph;
 using QuickGraph.Graphviz;
+using Spectre.Console;
 
 namespace ServiceGraph.Visualization.Core;
 
@@ -15,6 +16,10 @@ public class ConsoleVisualization : IVisualize
     public void Visualize()
     {
         string dot = _graphviz.Generate();
-        File.WriteAllText("dependencyGraph.dot", dot);
+        AnsiConsole.MarkupLine("[bold yellow]Generated Graphviz DOT Representation:[/]");
+        AnsiConsole.WriteLine();
+        AnsiConsole.MarkupLine("[bold green]----------------------------------------[/]");
+        AnsiConsole.WriteLine(dot);
+        AnsiConsole.MarkupLine("[bold green]----------------------------------------[/]");
     }
 }
