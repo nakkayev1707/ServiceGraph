@@ -20,28 +20,38 @@ To set up and run ServiceGraph locally, follow these steps:
     cd ServiceGraph
     ```
 
-2. **Build the project**:
-    ```bash
-    dotnet build
-    ```
-
-3. **Run the application**:
-    ```bash
-    dotnet run
-    ```
-
 ## Usage
+#### Web Applications:
 
-1. Start the application using the command above.
-2. Use the interactive graph to explore and manage service dependencies.
-3. Click on nodes and edges for more detailed information about each service and its dependencies.
+```
+builder.Services.AddScoped<IYourService, YourService>();
+...
+...
+builder.Services.AddServiceGraph(new ServiceGraphOption
+{
+    // list of namespaces with services to resolve
+    Namespaces = new []
+    {
+        "Namespace.Services", 
+    },
+    VisualizationOption = new GraphVisualizationOption
+    {
+        VisualizationMethod = VisualizationMethod.Console
+    }
+});
+```
+#### Console Applications:
+```
+new DependencyResolver(services, options).Visualize();
+```
+
 
 ## Contributing
 
-Contributions are welcome! If you have ideas for improvements or find any issues, please fork the repository and submit a pull request. Follow these steps to contribute:
+Contributions are welcome! If you have ideas for improvements or find any issues, please clone the repository and submit a pull request. Follow these steps to contribute:
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature`).
+1. clone the repository.
+2. Create a new branch (`git checkout -b feature/your-feature`) from master branch.
 3. Make your changes.
 4. Commit your changes (`git commit -m 'Add some feature'`).
 5. Push to the branch (`git push origin feature/your-feature`).
