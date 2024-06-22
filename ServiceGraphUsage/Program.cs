@@ -26,8 +26,7 @@ builder.Services.AddServiceGraph(new ServiceGraphOption
     },
     VisualizationOption = new GraphVisualizationOption
     {
-        VisualizationMethod = VisualizationMethod.Console,
-        HighlightIssues = true
+        VisualizationMethod = VisualizationMethod.Console
     }
 });
 

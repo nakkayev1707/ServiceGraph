@@ -14,7 +14,6 @@ public class GraphVisualizer
         _graphviz = graphviz;
         _visualizationOption = visualizationOption ?? new GraphVisualizationOption
         {
-            HighlightIssues = true,
             VisualizationMethod = VisualizationMethod.Console
         };
     }
