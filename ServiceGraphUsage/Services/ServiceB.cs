@@ -2,7 +2,7 @@
 
 namespace ServiceGraphUsage.Services;
 
-public class ServiceB : IServiceB
+public class ServiceB : IServiceB, IServiceA
 {
     private readonly IServiceC _serviceC;
 

@@ -14,7 +14,7 @@ public class CycleDetector
 
     public bool HasCycle()
     {
-        // todo continue impl
+        
         throw new NotImplementedException();
     }
 }

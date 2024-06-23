@@ -23,6 +23,10 @@ public class ConsoleVisualization : IVisualize
         AnsiConsole.WriteLine();
         AnsiConsole.MarkupLine("[bold green]----------------------------------------[/]");
         AnsiConsole.WriteLine(dot);
+        if (_cycleDetector.HasCycle())
+        {
+            AnsiConsole.MarkupLine("[bold red] cycle detected[/]");
+        }
         AnsiConsole.MarkupLine("[bold green]----------------------------------------[/]");
     }
 }
