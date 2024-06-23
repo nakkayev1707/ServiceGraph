@@ -1,5 +1,6 @@
 ﻿using QuickGraph;
 using QuickGraph.Graphviz;
+using ServiceGraph.Graph;
 using Spectre.Console;
 
 namespace ServiceGraph.Visualization.Core;
@@ -7,10 +8,12 @@ namespace ServiceGraph.Visualization.Core;
 public class ConsoleVisualization : IVisualize
 {
     private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
+    private readonly CycleDetector _cycleDetector;
     
     public ConsoleVisualization( GraphvizAlgorithm<Type, Edge<Type>> graphviz)
     {
         _graphviz = graphviz;
+        _cycleDetector = new CycleDetector(graphviz);
     }
 
     public void Visualize()
