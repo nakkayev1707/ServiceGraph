@@ -6,7 +6,7 @@ public class ServiceA : IServiceA, IServiceB
 {
     private readonly IServiceB _serviceB;
 
-    public ServiceA(IServiceB serviceB, IServiceA serviceA)
+    public ServiceA(IServiceB serviceB)
     {
         _serviceB = serviceB;
     }

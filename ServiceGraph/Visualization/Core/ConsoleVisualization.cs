@@ -24,12 +24,11 @@ public class ConsoleVisualization : IVisualize
         AnsiConsole.MarkupLine("[bold green]----------------------------------------[/]");
         AnsiConsole.WriteLine(dot);
 
-        Type? circularService = _cycleDetector.TryFindCircularDependentServices();
-        if (circularService != null)
+        Tuple<Type, Type>? circularServices = _cycleDetector.TryFindCircularDependentServices();
+        if (circularServices != null)
         {
-            AnsiConsole.MarkupLine($"[bold red] cycle detected: {circularService.FullName}[/]");
+            AnsiConsole.MarkupLine($"[bold red] cycle detected: {circularServices.Item1.FullName} => {circularServices.Item2.FullName}[/]");
         }
-        
         
         AnsiConsole.MarkupLine("[bold green]----------------------------------------[/]");
     }

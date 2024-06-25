@@ -12,34 +12,49 @@ public class CycleDetector
         _graphviz = graphviz;
     }
 
-    public Type? TryFindCircularDependentServices()
+    public Tuple<Type, Type>? TryFindCircularDependentServices()
     {
         if (_graphviz == null) throw new ArgumentNullException(nameof(_graphviz));
     
         IEdgeListGraph<Type, Edge<Type>>? graph = _graphviz.VisitedGraph;
 
-        // Dictionary to keep track of visited nodes and their state
-        Dictionary<Type, bool> visited = new Dictionary<Type, bool>();
-        Dictionary<Type, bool> inStack = new Dictionary<Type, bool>();
+        var visited = new Dictionary<Type, bool>();
+        var inStack = new Dictionary<Type, bool>();
 
-        foreach (var node in graph.Vertices)
+        foreach (Type? node in graph.Vertices)
         {
             visited[node] = false;
             inStack[node] = false;
         }
         
-        foreach (var node in graph.Vertices)
+        foreach (Type? node in graph.Vertices)
         {
-            if (DFS(visited, node, inStack, graph))
+            if (!visited[node] && DFS(visited, node, inStack, graph))
             {
-                return node;
+                Tuple<Type, Type>? cycleNodes = GetCycleNodes(node, inStack);
+                if (cycleNodes != null)
+                {
+                    return new Tuple<Type, Type>(cycleNodes.Item1, cycleNodes.Item2);
+                }
             }
         }
 
         return null;
     }
+    
+    private Tuple<Type, Type>? GetCycleNodes(Type startNode, Dictionary<Type, bool> inStack)
+    {
+        foreach (Type node in inStack.Keys)
+        {
+            if (inStack[node])
+            {
+                return new Tuple<Type, Type>(startNode, node);
+            }
+        }
+        return null;
+    }
 
-    private static bool DFS(Dictionary<Type, bool> visited, Type node, Dictionary<Type, bool> inStack, IEdgeListGraph<Type, Edge<Type>>? graph)
+    private bool DFS(Dictionary<Type, bool> visited, Type node, Dictionary<Type, bool> inStack, IEdgeListGraph<Type, Edge<Type>>? graph)
     {
         if (!visited[node])
         {
@@ -50,7 +65,7 @@ public class CycleDetector
             {
                 if (EqualityComparer<Type>.Default.Equals(edge.Source, node))
                 {
-                    var neighbor = edge.Target;
+                    Type? neighbor = edge.Target;
 
                     if (!visited[neighbor] && DFS(visited, neighbor, inStack, graph))
                     {
