@@ -26,7 +26,8 @@ builder.Services.AddServiceGraph(new ServiceGraphOption
     },
     VisualizationOption = new GraphVisualizationOption
     {
-        VisualizationMethod = VisualizationMethod.Console
+        VisualizationMethod = VisualizationMethod.File,
+        OutputFileName = "dependencies.txt"
     }
 });
 

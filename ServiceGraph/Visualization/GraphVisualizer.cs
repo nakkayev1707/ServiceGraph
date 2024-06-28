@@ -23,7 +23,7 @@ public class GraphVisualizer
         IVisualize visualizationObj = _visualizationOption?.VisualizationMethod switch
         {
             VisualizationMethod.Console => new ConsoleVisualization(_graphviz),
-            VisualizationMethod.File => new FileVisualization(_graphviz),
+            VisualizationMethod.File => new FileVisualization(_graphviz, _visualizationOption.OutputFileName),
             _ => new ConsoleVisualization(_graphviz)
         };
         

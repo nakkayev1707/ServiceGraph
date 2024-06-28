@@ -10,7 +10,7 @@ public class ConsoleVisualization : IVisualize
     private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
     private readonly CycleDetector _cycleDetector;
     
-    public ConsoleVisualization( GraphvizAlgorithm<Type, Edge<Type>> graphviz)
+    public ConsoleVisualization(GraphvizAlgorithm<Type, Edge<Type>> graphviz)
     {
         _graphviz = graphviz;
         _cycleDetector = new CycleDetector(graphviz);

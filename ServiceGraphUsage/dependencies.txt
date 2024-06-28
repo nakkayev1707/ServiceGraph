@@ -1,0 +1,9 @@
+digraph G {
+0 [label="ServiceGraphUsage.Services.Abstract.IServiceA"];
+1 [label="ServiceGraphUsage.Services.Abstract.IServiceB"];
+2 [label="ServiceGraphUsage.Services.Abstract.IServiceC"];
+3 [label="ServiceGraphUsage.Services.Abstract.IServiceD"];
+4 [label="ServiceGraphUsage.Services.Abstract.IServiceE"];
+0 -> 1 [ label=""];
+1 -> 2 [ label=""];
+}
