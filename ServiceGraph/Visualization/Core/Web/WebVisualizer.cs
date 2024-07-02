@@ -3,7 +3,7 @@ using QuickGraph;
 using QuickGraph.Graphviz;
 using ServiceGraph.Graph;
 
-namespace ServiceGraph.Visualization.Core;
+namespace ServiceGraph.Visualization.Core.Web;
 
 public class WebVisualizer : IVisualize
 {
@@ -15,8 +15,8 @@ public class WebVisualizer : IVisualize
         _graphviz = graphviz;
         _cycleDetector = new CycleDetector(graphviz);
     }
-    
-    public void Visualize()
+
+    public string GenerateDot()
     {
         string dot = _graphviz.Generate();
         var logMessage = new StringBuilder(dot);
@@ -26,7 +26,12 @@ public class WebVisualizer : IVisualize
         {
             logMessage.AppendLine($"[bold red] cycle detected: {circularServices.Item1.FullName} => {circularServices.Item2.FullName}");
         }
+
+        return logMessage.ToString();
+    }
+    
+    public void Visualize()
+    {
         
-        // TODO: continue implementation
     }
 }
