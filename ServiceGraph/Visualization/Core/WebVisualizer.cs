@@ -1,9 +1,32 @@
-﻿namespace ServiceGraph.Visualization.Core;
+﻿using System.Text;
+using QuickGraph;
+using QuickGraph.Graphviz;
+using ServiceGraph.Graph;
+
+namespace ServiceGraph.Visualization.Core;
 
 public class WebVisualizer : IVisualize
 {
+    private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
+    private readonly CycleDetector _cycleDetector;
+    
+    public WebVisualizer(GraphvizAlgorithm<Type, Edge<Type>> graphviz)
+    {
+        _graphviz = graphviz;
+        _cycleDetector = new CycleDetector(graphviz);
+    }
+    
     public void Visualize()
     {
-        throw new NotImplementedException();
+        string dot = _graphviz.Generate();
+        var logMessage = new StringBuilder(dot);
+        
+        Tuple<Type, Type>? circularServices = _cycleDetector.TryFindCircularDependentServices();
+        if (circularServices != null)
+        {
+            logMessage.AppendLine($"[bold red] cycle detected: {circularServices.Item1.FullName} => {circularServices.Item2.FullName}");
+        }
+        
+        // TODO: continue implementation
     }
 }
