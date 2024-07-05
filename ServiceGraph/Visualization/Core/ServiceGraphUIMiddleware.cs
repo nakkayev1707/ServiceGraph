@@ -6,15 +6,16 @@ namespace ServiceGraph.Visualization.Core;
 
 public class ServiceGraphUIMiddleware
 {
+    private const string routePrefix = "service-graph";
+    
     public async Task Invoke(HttpContext httpContext)
     {
-        var httpMethod = httpContext.Request.Method;
-        var path = httpContext.Request.Path.Value;
+        string? httpMethod = httpContext.Request.Method;
+        string? path = httpContext.Request.Path.Value;
 
-        if (httpMethod == "GET" && Regex.IsMatch(path, $"^/?{Regex.Escape(_options.RoutePrefix)}/?$",  RegexOptions.IgnoreCase))
+        if (httpMethod == "GET" && Regex.IsMatch(path, $"^/?{routePrefix}/?$",  RegexOptions.IgnoreCase))
         {
-            // Use relative redirect to support proxy environments
-            var relativeIndexUrl = string.IsNullOrEmpty(path) || path.EndsWith("/")
+            string relativeIndexUrl = string.IsNullOrEmpty(path) || path.EndsWith("/")
                 ? "index.html"
                 : $"{path.Split('/').Last()}/index.html";
 
@@ -22,13 +23,10 @@ public class ServiceGraphUIMiddleware
             return;
         }
 
-        if (httpMethod == "GET" && Regex.IsMatch(path, $"^/{Regex.Escape(_options.RoutePrefix)}/?index.html$",  RegexOptions.IgnoreCase))
+        if (httpMethod == "GET" && Regex.IsMatch(path, $"^/{routePrefix}/?index.html$",  RegexOptions.IgnoreCase))
         {
             await RespondWithIndexHtml(httpContext.Response);
-            return;
         }
-
-        await _staticFileMiddleware.Invoke(httpContext);
     }
     
     private async Task RespondWithIndexHtml(HttpResponse response)
@@ -49,5 +47,11 @@ public class ServiceGraphUIMiddleware
 
             await response.WriteAsync(htmlBuilder.ToString(), Encoding.UTF8);
         }
+    }
+    
+    private void RespondWithRedirect(HttpResponse response, string location)
+    {
+        response.StatusCode = 301;
+        response.Headers["Location"] = location;
     }
 }
