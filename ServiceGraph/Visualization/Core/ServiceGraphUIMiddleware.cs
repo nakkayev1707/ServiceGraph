@@ -6,14 +6,14 @@ namespace ServiceGraph.Visualization.Core;
 
 public class ServiceGraphUIMiddleware
 {
-    private const string routePrefix = "service-graph";
+    private const string RoutePrefix = "service-graph";
     
     public async Task Invoke(HttpContext httpContext)
     {
         string? httpMethod = httpContext.Request.Method;
         string? path = httpContext.Request.Path.Value;
 
-        if (httpMethod == "GET" && Regex.IsMatch(path, $"^/?{routePrefix}/?$",  RegexOptions.IgnoreCase))
+        if (httpMethod == "GET" && Regex.IsMatch(path, $"^/?{RoutePrefix}/?$",  RegexOptions.IgnoreCase))
         {
             string relativeIndexUrl = string.IsNullOrEmpty(path) || path.EndsWith("/")
                 ? "index.html"
@@ -23,7 +23,7 @@ public class ServiceGraphUIMiddleware
             return;
         }
 
-        if (httpMethod == "GET" && Regex.IsMatch(path, $"^/{routePrefix}/?index.html$",  RegexOptions.IgnoreCase))
+        if (httpMethod == "GET" && Regex.IsMatch(path, $"^/{RoutePrefix}/?index.html$",  RegexOptions.IgnoreCase))
         {
             await RespondWithIndexHtml(httpContext.Response);
         }
