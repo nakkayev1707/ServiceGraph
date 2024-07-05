@@ -38,6 +38,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseServiceGraphUI();
 }
 
 app.UseHttpsRedirection();

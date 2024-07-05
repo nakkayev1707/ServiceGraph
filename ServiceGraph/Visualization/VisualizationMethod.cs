@@ -2,5 +2,5 @@
 
 public enum VisualizationMethod
 {
-    Console, File, Web
+    Console, File
 }
