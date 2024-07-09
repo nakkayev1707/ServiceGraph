@@ -2,51 +2,70 @@
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 
-namespace ServiceGraph.Visualization.Core;
-
-public class ServiceGraphUIMiddleware
+namespace ServiceGraph.Visualization.Core
 {
-    private const string RoutePrefix = "service-graph";
-    
-    public async Task Invoke(HttpContext httpContext)
+    public class ServiceGraphUIMiddleware
     {
-        string? httpMethod = httpContext.Request.Method;
-        string? path = httpContext.Request.Path.Value;
+        private const string RoutePrefix = "service-graph";
+        private readonly RequestDelegate _next;
 
-        if (httpMethod == "GET" && Regex.IsMatch(path, $"^/?{RoutePrefix}/?$",  RegexOptions.IgnoreCase))
+        public ServiceGraphUIMiddleware(RequestDelegate next)
         {
-            string relativeIndexUrl = string.IsNullOrEmpty(path) || path.EndsWith("/")
-                ? "index.html"
-                : $"{path.Split('/').Last()}/index.html";
-
-            RespondWithRedirect(httpContext.Response, relativeIndexUrl);
-            return;
+            _next = next;
         }
 
-        if (httpMethod == "GET" && Regex.IsMatch(path, $"^/{RoutePrefix}/?index.html$",  RegexOptions.IgnoreCase))
+        public async Task Invoke(HttpContext httpContext)
         {
-            await RespondWithIndexHtml(httpContext.Response);
-        }
-    }
-    
-    private async Task RespondWithIndexHtml(HttpResponse response)
-    {
-        response.StatusCode = 200;
-        response.ContentType = "text/html;charset=utf-8";
+            string? httpMethod = httpContext.Request.Method;
+            string? path = httpContext.Request.Path.Value;
 
-        using (var stream = new FileStream("service-graph.html", FileMode.Open, FileAccess.ReadWrite))
+            if (httpMethod == "GET" && Regex.IsMatch(path, $"^/?{RoutePrefix}/?$", RegexOptions.IgnoreCase))
+            {
+                RespondWithRedirect(httpContext.Response, $"{RoutePrefix}/index.html");
+                return;
+            }
+
+            if (httpMethod == "GET" && Regex.IsMatch(path, $"^/{RoutePrefix}/index.html$", RegexOptions.IgnoreCase))
+            {
+                await RespondWithIndexHtml(httpContext.Response);
+                return;
+            }
+
+            await _next(httpContext);
+        }
+
+        private async Task RespondWithIndexHtml(HttpResponse response)
         {
-            using var reader = new StreamReader(stream);
+            response.StatusCode = 200;
+            response.ContentType = "text/html;charset=utf-8";
 
-            var htmlBuilder = new StringBuilder(await reader.ReadToEndAsync());
+            try
+            {
+                using var stream = new FileStream("service-graph.html", FileMode.Open, FileAccess.Read);
+                using var reader = new StreamReader(stream);
 
-            await response.WriteAsync(htmlBuilder.ToString(), Encoding.UTF8);
+                var htmlBuilder = new StringBuilder(await reader.ReadToEndAsync());
+
+                // Optionally: Insert any custom logic to modify the HTML content here
+
+                await response.WriteAsync(htmlBuilder.ToString(), Encoding.UTF8);
+            }
+            catch (FileNotFoundException)
+            {
+                response.StatusCode = 404;
+                await response.WriteAsync("File not found.");
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                await response.WriteAsync($"Internal server error: {ex.Message}");
+            }
         }
-    }
-    
-    private void RespondWithRedirect(HttpResponse response, string location)
-    {
-        response.StatusCode = 301;
-        response.Headers["Location"] = location;
+
+        private void RespondWithRedirect(HttpResponse response, string location)
+        {
+            response.StatusCode = 301;
+            response.Headers["Location"] = location;
+        }
     }
 }
