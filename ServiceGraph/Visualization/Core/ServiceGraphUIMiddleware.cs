@@ -34,16 +34,11 @@ public class ServiceGraphUIMiddleware
         response.StatusCode = 200;
         response.ContentType = "text/html;charset=utf-8";
 
-        using (var stream = _options.IndexStream())
+        using (var stream = new FileStream("service-graph.html", FileMode.Open, FileAccess.ReadWrite))
         {
             using var reader = new StreamReader(stream);
 
-            // Inject arguments before writing to response
             var htmlBuilder = new StringBuilder(await reader.ReadToEndAsync());
-            foreach (var entry in GetIndexArguments())
-            {
-                htmlBuilder.Replace(entry.Key, entry.Value);
-            }
 
             await response.WriteAsync(htmlBuilder.ToString(), Encoding.UTF8);
         }
