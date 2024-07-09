@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
+using Spectre.Console;
 
 namespace ServiceGraph.Visualization.Core
 {
@@ -18,6 +19,8 @@ namespace ServiceGraph.Visualization.Core
         {
             string? httpMethod = httpContext.Request.Method;
             string? path = httpContext.Request.Path.Value;
+
+            PrintServiceGraphUILaunchUrl(httpContext);
 
             if (httpMethod == "GET" && Regex.IsMatch(path, $"^/?{RoutePrefix}/?$", RegexOptions.IgnoreCase))
             {
@@ -66,6 +69,16 @@ namespace ServiceGraph.Visualization.Core
         {
             response.StatusCode = 301;
             response.Headers["Location"] = location;
+        }
+        
+        private static void PrintServiceGraphUILaunchUrl(HttpContext httpContext)
+        {
+            var request = httpContext.Request;
+            var host = request.Host.Value;
+            var scheme = request.Scheme;
+            var url = $"{scheme}://{host}/{RoutePrefix}/index.html";
+
+            AnsiConsole.MarkupLine($"[bold green] ServiceGraphUI: {url} [/]");
         }
     }
 }
