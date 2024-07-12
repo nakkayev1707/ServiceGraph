@@ -18,18 +18,6 @@ internal class DependencyGraphBuilder
         _serviceCollection = serviceCollection;
         _graphOption = graphOption;
     }
-
-    public bool HasCircularDependencies()
-    {
-        GraphvizAlgorithm<Type, Edge<Type>> graph = BuildGraph();
-        foreach (Type? vertex in graph.VisitedGraph.Vertices)
-        {
-            Console.WriteLine(vertex.FullName);
-        }
-
-        // todo: continue implementation
-        return false;
-    }
     
     public GraphvizAlgorithm<Type, Edge<Type>> BuildGraph()
     {
