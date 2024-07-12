@@ -8,6 +8,7 @@ namespace ServiceGraph.Visualization.Core
     public class ServiceGraphUIMiddleware
     {
         private const string RoutePrefix = "service-graph";
+        private static bool _informed = false;
         private readonly RequestDelegate _next;
 
         public ServiceGraphUIMiddleware(RequestDelegate next)
@@ -19,9 +20,9 @@ namespace ServiceGraph.Visualization.Core
         {
             string? httpMethod = httpContext.Request.Method;
             string? path = httpContext.Request.Path.Value;
-
+            
             PrintServiceGraphUILaunchUrl(httpContext);
-
+            
             if (httpMethod == "GET" && Regex.IsMatch(path, $"^/?{RoutePrefix}/?$", RegexOptions.IgnoreCase))
             {
                 RespondWithRedirect(httpContext.Response, $"{RoutePrefix}/index.html");
@@ -73,12 +74,15 @@ namespace ServiceGraph.Visualization.Core
         
         private static void PrintServiceGraphUILaunchUrl(HttpContext httpContext)
         {
+            if (_informed) return;
+            
+            _informed = true;
             var request = httpContext.Request;
             var host = request.Host.Value;
             var scheme = request.Scheme;
             var url = $"{scheme}://{host}/{RoutePrefix}/index.html";
 
-            AnsiConsole.MarkupLine($"[bold green] ServiceGraphUI: {url} [/]");
+            AnsiConsole.MarkupLine($"[bold green]ServiceGraphUI: {url} [/]");
         }
     }
 }

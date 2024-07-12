@@ -5,6 +5,8 @@ namespace ServiceGraph.Extensions;
 
 public static class ServiceGraphUIExtensions
 {
+    private const string RoutePrefix = "service-graph";
+    
     public static IApplicationBuilder UseServiceGraphUI(
         this IApplicationBuilder app)
     {
