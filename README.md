@@ -39,6 +39,15 @@ builder.Services.AddServiceGraph(new ServiceGraphOption
         VisualizationMethod = VisualizationMethod.Console
     }
 });
+
+...
+
+// make sure that you are in dev. environment
+if (app.Environment.IsDevelopment())
+{
+    app.UseServiceGraphUI();
+}
+
 ```
 #### Console Applications:
 ```
