@@ -64,7 +64,7 @@ namespace ServiceGraph.Visualization.Core
         private async Task<string> BuildHtmlPageAsync()
         {
             Assembly assembly = typeof(ServiceGraphUIMiddleware).GetTypeInfo().Assembly;
-            const string resourceName = "service-graph.html";
+            const string resourceName = "ServiceGraph.Visualization.Core.service-graph.html";
 
             await using Stream stream = assembly.GetManifestResourceStream(resourceName);
             if (stream == null)
