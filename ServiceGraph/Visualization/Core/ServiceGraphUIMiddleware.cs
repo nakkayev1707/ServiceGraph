@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 using Spectre.Console;
@@ -62,11 +63,28 @@ namespace ServiceGraph.Visualization.Core
 
         private async Task<string> BuildHtmlPageAsync()
         {
-            await using var stream = new FileStream("service-graph.html", FileMode.Open, FileAccess.Read);
+            Assembly assembly = typeof(ServiceGraphUIMiddleware).GetTypeInfo().Assembly;
+            const string resourceName = "service-graph.html";
+
+            await using Stream stream = assembly.GetManifestResourceStream(resourceName);
+            if (stream == null)
+            {
+                throw new FileNotFoundException("Resource not found: " + resourceName);
+            }
+
             using var reader = new StreamReader(stream);
             var htmlBuilder = new StringBuilder(await reader.ReadToEndAsync());
             
-            // fill template here
+            var placeholders = new Dictionary<string, string>
+            {
+                { "{{Title}}", "My Service Graph" },
+                { "{{Date}}", DateTime.Now.ToString("yyyy-MM-dd") },
+            };
+
+            foreach (var placeholder in placeholders)
+            {
+                htmlBuilder.Replace(placeholder.Key, placeholder.Value);
+            }
             
             return htmlBuilder.ToString();
         }
