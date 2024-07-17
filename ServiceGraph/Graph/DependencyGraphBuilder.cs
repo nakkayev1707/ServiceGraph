@@ -2,8 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using QuickGraph;
 using QuickGraph.Graphviz;
-using QuickGraph.Graphviz.Dot;
-using QuickGraph.Serialization;
 using ServiceGraph.Core;
 
 namespace ServiceGraph.Graph;
