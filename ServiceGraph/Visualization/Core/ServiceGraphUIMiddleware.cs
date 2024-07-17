@@ -63,17 +63,7 @@ namespace ServiceGraph.Visualization.Core
 
         private async Task<string> BuildHtmlPageAsync()
         {
-            Assembly assembly = typeof(ServiceGraphUIMiddleware).GetTypeInfo().Assembly;
-            const string resourceName = "ServiceGraph.Visualization.Core.service-graph.html";
-
-            await using Stream stream = assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-            {
-                throw new FileNotFoundException("Resource not found: " + resourceName);
-            }
-
-            using var reader = new StreamReader(stream);
-            var htmlBuilder = new StringBuilder(await reader.ReadToEndAsync());
+            StringBuilder htmlBuilder = await ReadTemplateAsync();
             
             var placeholders = new Dictionary<string, string>
             {
@@ -87,6 +77,23 @@ namespace ServiceGraph.Visualization.Core
             }
             
             return htmlBuilder.ToString();
+        }
+
+        private async Task<StringBuilder> ReadTemplateAsync()
+        {
+            Assembly assembly = typeof(ServiceGraphUIMiddleware).GetTypeInfo().Assembly;
+            const string resourceName = "ServiceGraph.Visualization.Core.service-graph.html";
+
+            await using Stream stream = assembly.GetManifestResourceStream(resourceName);
+            if (stream == null)
+            {
+                throw new FileNotFoundException("Resource not found: " + resourceName);
+            }
+
+            using var reader = new StreamReader(stream);
+            var template = new StringBuilder(await reader.ReadToEndAsync());
+            
+            return template;
         }
 
         private void RespondWithRedirect(HttpResponse response, string location)
