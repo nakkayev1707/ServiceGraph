@@ -3,64 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Service Graph</title>
+    <title>{{Title}}</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-        }
-
-        h1 {
+            background-color: #f4f4f4;
             color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
-        #chartContainer {
-            width: 80%;
-            margin: 0 auto;
+        h1 {
+            margin-top: 20px;
+        }
+        #graph {
+            border: 2px solid #333;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+        /* Styling for the SVG elements */
+        .node ellipse,
+        .node polygon {
+            fill: #61a3ff;
+            stroke: #333;
+            stroke-width: 1.5;
+        }
+        .node text {
+            fill: white;
+            font-weight: bold;
+        }
+        .edge path {
+            stroke: #999999;
+            stroke-width: 1.5;
+        }
+        .node[label="Start"] ellipse {
+            fill: #ff7f50;
+        }
+        .node[label="End"] ellipse {
+            fill: #6ab76a;
+        }
+        .node[label="Process"] polygon {
+            fill: #61a3ff;
+        }
+        .node[label="Decision"] polygon {
+            fill: #ffcc00;
         }
     </style>
 </head>
 <body>
 <h1>{{Title}}</h1>
-<div id="chartContainer">
-    <canvas id="myChart"></canvas>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div id="graph"></div>
+
 <script>
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
+    // Define the Graphviz dot code without inline styles
+    const dot = `
+            {{GraphContent}}
+        `;
+
+    // Render the graph
+    const container = document.getElementById('graph');
+    const viz = new Viz();
+    viz.renderSVGElement(dot)
+        .then(function(element) {
+            container.appendChild(element);
+        })
+        .catch(error => {
+            container.innerHTML = `<strong>Error:</strong> ${error.message}`;
+        });
 </script>
 </body>
 </html>

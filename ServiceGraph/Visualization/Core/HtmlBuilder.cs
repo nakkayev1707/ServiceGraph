@@ -13,8 +13,8 @@ public class HtmlBuilder
             
         var placeholders = new Dictionary<string, string>
         {
-            { "{{Title}}", "My Service Graph" },
-            { "{{Date}}", DateTime.Now.ToString("yyyy-MM-dd") },
+            { "{{Title}}", "Service Graph" },
+            // { "{{GraphContent}}",  },
         };
 
         foreach (KeyValuePair<string, string> placeholder in placeholders)
