@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 using Spectre.Console;
@@ -46,7 +45,7 @@ namespace ServiceGraph.Visualization.Core
 
             try
             {
-                string htmlTemplate = await BuildHtmlPageAsync();
+                string htmlTemplate = await new HtmlBuilder().BuildAsync();
                 await response.WriteAsync(htmlTemplate, Encoding.UTF8);
             }
             catch (FileNotFoundException)
@@ -59,41 +58,6 @@ namespace ServiceGraph.Visualization.Core
                 response.StatusCode = 500;
                 await response.WriteAsync($"Internal server error: {ex.Message}");
             }
-        }
-
-        private async Task<string> BuildHtmlPageAsync()
-        {
-            StringBuilder htmlBuilder = await ReadTemplateAsync();
-            
-            var placeholders = new Dictionary<string, string>
-            {
-                { "{{Title}}", "My Service Graph" },
-                { "{{Date}}", DateTime.Now.ToString("yyyy-MM-dd") },
-            };
-
-            foreach (var placeholder in placeholders)
-            {
-                htmlBuilder.Replace(placeholder.Key, placeholder.Value);
-            }
-            
-            return htmlBuilder.ToString();
-        }
-
-        private async Task<StringBuilder> ReadTemplateAsync()
-        {
-            Assembly assembly = typeof(ServiceGraphUIMiddleware).GetTypeInfo().Assembly;
-            const string resourceName = "ServiceGraph.Visualization.Core.service-graph.html";
-
-            await using Stream stream = assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-            {
-                throw new FileNotFoundException("Resource not found: " + resourceName);
-            }
-
-            using var reader = new StreamReader(stream);
-            var template = new StringBuilder(await reader.ReadToEndAsync());
-            
-            return template;
         }
 
         private void RespondWithRedirect(HttpResponse response, string location)
