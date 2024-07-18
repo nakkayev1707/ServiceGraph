@@ -5,6 +5,8 @@ namespace ServiceGraph.Visualization.Core;
 
 public class HtmlBuilder
 {
+    private const string TemplateFileName = "ServiceGraph.Visualization.Core.service-graph.html";
+    
     public async Task<string> BuildAsync()
     {
         StringBuilder htmlBuilder = await ReadTemplateAsync();
@@ -26,12 +28,11 @@ public class HtmlBuilder
     private async Task<StringBuilder> ReadTemplateAsync()
     {
         Assembly assembly = typeof(ServiceGraphUIMiddleware).GetTypeInfo().Assembly;
-        const string resourceName = "ServiceGraph.Visualization.Core.service-graph.html";
 
-        await using Stream stream = assembly.GetManifestResourceStream(resourceName);
+        await using Stream stream = assembly.GetManifestResourceStream(TemplateFileName);
         if (stream == null)
         {
-            throw new FileNotFoundException("Resource not found: " + resourceName);
+            throw new FileNotFoundException("Template file not found: " + TemplateFileName);
         }
 
         using var reader = new StreamReader(stream);
