@@ -21,12 +21,12 @@ public class HtmlBuilder
     public async Task<string> BuildAsync()
     {
         StringBuilder htmlBuilder = await ReadTemplateAsync();
-        GraphvizAlgorithm<Type, Edge<Type>> graphviz = _dependencyGraphBuilder.BuildGraph();
+        string graphContent = GenerateContent();
             
         var placeholders = new Dictionary<string, string>
         {
             { "{{Title}}", "Service Graph" },
-            // { "{{GraphContent}}",  },
+            { "{{GraphContent}}",  graphContent},
         };
 
         foreach (KeyValuePair<string, string> placeholder in placeholders)
@@ -35,6 +35,17 @@ public class HtmlBuilder
         }
         
         return htmlBuilder.ToString();
+    }
+
+    private string GenerateContent()
+    {
+        GraphvizAlgorithm<Type, Edge<Type>> graphviz = _dependencyGraphBuilder.BuildGraph();
+      
+        // TODO: handle cycle dependencies
+        // var cycleDetector = new CycleDetector(graphviz);
+        // Tuple<Type, Type>? circularServices = cycleDetector.TryFindCircularDependentServices();
+
+        return graphviz.Generate();
     }
 
     private async Task<StringBuilder> ReadTemplateAsync()

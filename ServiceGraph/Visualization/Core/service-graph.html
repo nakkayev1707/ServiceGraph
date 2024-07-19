@@ -59,12 +59,10 @@
 <div id="graph"></div>
 
 <script>
-    // Define the Graphviz dot code without inline styles
     const dot = `
             {{GraphContent}}
         `;
 
-    // Render the graph
     const container = document.getElementById('graph');
     const viz = new Viz();
     viz.renderSVGElement(dot)
