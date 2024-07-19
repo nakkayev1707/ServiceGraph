@@ -6,6 +6,7 @@
     <title>{{Title}}</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -35,7 +36,6 @@
             overflow-x: auto;
             border-radius: 8px;
         }
-        /* Styling for the SVG elements */
         .node ellipse,
         .node polygon {
             fill: #61a3ff;
@@ -69,6 +69,22 @@
             text-align: center;
             width: 100%;
         }
+        header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        header .github-link {
+            font-size: 1rem;
+            margin-left: 30px;
+            color: #0366d6;
+            text-decoration: none;
+        }
+        header .github-link:hover {
+            color: #024f7f;
+        }
+        header p {
+            margin: 10px;
+        }
         .circular-dependency {
             font-size: 1.2rem;
             margin: 20px;
@@ -77,14 +93,19 @@
     </style>
 </head>
 <header>
-    <p>Service Graph Application &copy; 2024</p>
+    <p>
+        Service Graph &copy; <span id="year"></span>
+        <a href="https://github.com/nakkayev1707/ServiceGraph" class="github-link" target="_blank">
+            Contribute: <i class="fab fa-github"></i>
+        </a>
+    </p>
 </header>
 <body>
-<h1>{{Title}}</h1>
 <div id="graph"></div>
 <div class="circular-dependency">{{CircularDependency}}</div>
 
 <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
     const dot = `
                 {{GraphContent}}
             `;
