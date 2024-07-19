@@ -17,19 +17,6 @@ builder.Services.AddScoped<IServiceC, ServiceC>();
 builder.Services.AddScoped<IServiceD, ServiceD>();
 builder.Services.AddScoped<IServiceE, ServiceE>();
 
-builder.Services.AddServiceGraph(new ServiceGraphOption
-{
-    Namespaces = new []
-    {
-        "ServiceGraphUsage.Services", 
-        "ServiceGraphUsage.Services.Abstract"
-    },
-    VisualizationOption = new GraphVisualizationOption
-    {
-        VisualizationMethod = VisualizationMethod.File,
-        OutputFileName = "dependencies.txt"
-    }
-});
 
 var app = builder.Build();
 
@@ -38,7 +25,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseServiceGraphUI();
+    app.UseServiceGraphUI(builder.Services, new ServiceGraphOption
+    {
+        Namespaces = new []
+        {
+            "ServiceGraphUsage.Services", 
+            "ServiceGraphUsage.Services.Abstract"
+        }
+    });
 }
 
 app.UseHttpsRedirection();

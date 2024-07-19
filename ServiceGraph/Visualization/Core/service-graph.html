@@ -57,14 +57,13 @@
 <body>
 <h1>{{Title}}</h1>
 <div id="graph"></div>
+<div>{{CircularDependency}}</div>
 
 <script>
-    // Define the Graphviz dot code without inline styles
     const dot = `
             {{GraphContent}}
         `;
 
-    // Render the graph
     const container = document.getElementById('graph');
     const viz = new Viz();
     viz.renderSVGElement(dot)

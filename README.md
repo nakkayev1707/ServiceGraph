@@ -26,34 +26,17 @@ To set up and run ServiceGraph locally, follow these steps:
 ```
 builder.Services.AddScoped<IYourService, YourService>();
 ...
-...
-builder.Services.AddServiceGraph(new ServiceGraphOption
-{
-    // list of namespaces with services to resolve
-    Namespaces = new []
-    {
-        "Namespace.Services", 
-    },
-    VisualizationOption = new GraphVisualizationOption
-    {
-        VisualizationMethod = VisualizationMethod.Console
-    }
-});
-
-...
 
 // make sure that you are in dev. environment
-if (app.Environment.IsDevelopment())
+app.UseServiceGraphUI(builder.Services, new ServiceGraphOption
 {
-    app.UseServiceGraphUI();
-}
+   Namespaces = new []
+   {
+      "Your.Custom.Namespaces"
+   }
+});
 
 ```
-#### Console Applications:
-```
-new DependencyResolver(services, options).Visualize();
-```
-
 
 ## Contributing
 
