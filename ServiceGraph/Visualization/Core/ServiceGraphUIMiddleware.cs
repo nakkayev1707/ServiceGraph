@@ -20,9 +20,9 @@ namespace ServiceGraph.Visualization.Core
         {
             string? httpMethod = httpContext.Request.Method;
             string? path = httpContext.Request.Path.Value;
-            
+
             PrintServiceGraphUILaunchUrl(httpContext);
-            
+
             if (httpMethod == "GET" && Regex.IsMatch(path, $"^/?{RoutePrefix}/?$", RegexOptions.IgnoreCase))
             {
                 RespondWithRedirect(httpContext.Response, $"{RoutePrefix}/index.html");
@@ -45,14 +45,8 @@ namespace ServiceGraph.Visualization.Core
 
             try
             {
-                using var stream = new FileStream("service-graph.html", FileMode.Open, FileAccess.Read);
-                using var reader = new StreamReader(stream);
-
-                var htmlBuilder = new StringBuilder(await reader.ReadToEndAsync());
-
-                // Optionally: Insert any custom logic to modify the HTML content here
-
-                await response.WriteAsync(htmlBuilder.ToString(), Encoding.UTF8);
+                string htmlTemplate = await new HtmlBuilder().BuildAsync();
+                await response.WriteAsync(htmlTemplate, Encoding.UTF8);
             }
             catch (FileNotFoundException)
             {
@@ -71,11 +65,11 @@ namespace ServiceGraph.Visualization.Core
             response.StatusCode = 301;
             response.Headers["Location"] = location;
         }
-        
+
         private static void PrintServiceGraphUILaunchUrl(HttpContext httpContext)
         {
             if (_informed) return;
-            
+
             _informed = true;
             var request = httpContext.Request;
             var host = request.Host.Value;
