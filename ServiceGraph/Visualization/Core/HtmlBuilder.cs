@@ -10,13 +10,12 @@ namespace ServiceGraph.Visualization.Core;
 public class HtmlBuilder
 {
     private const string TemplateFileName = "ServiceGraph.Visualization.Core.service-graph.html";
-    private readonly DependencyGraphBuilder _dependencyGraphBuilder;
     private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
     
     public HtmlBuilder(ServiceGraphOption graphOption, ServiceCollection serviceCollection)
     {
-        _dependencyGraphBuilder = new DependencyGraphBuilder(serviceCollection, graphOption);
-        _graphviz = _dependencyGraphBuilder.BuildGraph();
+        var dependencyGraphBuilder = new DependencyGraphBuilder(serviceCollection, graphOption);
+        _graphviz = dependencyGraphBuilder.BuildGraph();
     }
     
     public async Task<string> BuildAsync()
