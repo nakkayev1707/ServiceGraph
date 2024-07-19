@@ -6,24 +6,34 @@
     <title>{{Title}}</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/full.render.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background-color: #f4f4f4;
             color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
         }
         h1 {
-            margin-top: 20px;
+            margin-top: 40px;
+            font-size: 2.5rem;
+            color: #444;
         }
         #graph {
             border: 2px solid #333;
             background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             margin: 20px;
+            max-width: 95%;
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
         }
         /* Styling for the SVG elements */
         .node ellipse,
@@ -52,17 +62,32 @@
         .node[label="Decision"] polygon {
             fill: #ffcc00;
         }
+        header {
+            padding: 10px 0;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            width: 100%;
+        }
+        .circular-dependency {
+            font-size: 1.2rem;
+            margin: 20px;
+            color: #ff4d4d;
+        }
     </style>
 </head>
+<header>
+    <p>Service Graph Application &copy; 2024</p>
+</header>
 <body>
 <h1>{{Title}}</h1>
 <div id="graph"></div>
-<div>{{CircularDependency}}</div>
+<div class="circular-dependency">{{CircularDependency}}</div>
 
 <script>
     const dot = `
-            {{GraphContent}}
-        `;
+                {{GraphContent}}
+            `;
 
     const container = document.getElementById('graph');
     const viz = new Viz();
