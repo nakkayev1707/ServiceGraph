@@ -12,21 +12,23 @@ public class HtmlBuilder
 {
     private const string TemplateFileName = "ServiceGraph.Visualization.Core.service-graph.html";
     private readonly DependencyGraphBuilder _dependencyGraphBuilder;
+    private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
     
     public HtmlBuilder(ServiceGraphOption graphOption, ServiceCollection serviceCollection)
     {
         _dependencyGraphBuilder = new DependencyGraphBuilder(serviceCollection, graphOption);
+        _graphviz = _dependencyGraphBuilder.BuildGraph();
     }
     
     public async Task<string> BuildAsync()
     {
         StringBuilder htmlBuilder = await ReadTemplateAsync();
-        string graphContent = GenerateContent();
-            
+        
         var placeholders = new Dictionary<string, string>
         {
             { "{{Title}}", "Service Graph" },
-            { "{{GraphContent}}",  graphContent},
+            { "{{GraphContent}}",  _graphviz.Generate()},
+            { "{{CircularDependency}}", CheckCircularDependency()}
         };
 
         foreach (KeyValuePair<string, string> placeholder in placeholders)
@@ -37,15 +39,18 @@ public class HtmlBuilder
         return htmlBuilder.ToString();
     }
 
-    private string GenerateContent()
+    private string CheckCircularDependency()
     {
-        GraphvizAlgorithm<Type, Edge<Type>> graphviz = _dependencyGraphBuilder.BuildGraph();
-      
-        // TODO: handle cycle dependencies
-        // var cycleDetector = new CycleDetector(graphviz);
-        // Tuple<Type, Type>? circularServices = cycleDetector.TryFindCircularDependentServices();
+        var stringBuilder = new StringBuilder();
+        var cycleDetector = new CycleDetector(_graphviz);
+        
+        Tuple<Type, Type>? circularServices = cycleDetector.TryFindCircularDependentServices();
+        if (circularServices != null)
+        {
+            stringBuilder.AppendLine($"cycle detected: {circularServices.Item1.FullName} => {circularServices.Item2.FullName}");
+        }
 
-        return graphviz.Generate();
+        return stringBuilder.ToString();
     }
 
     private async Task<StringBuilder> ReadTemplateAsync()
