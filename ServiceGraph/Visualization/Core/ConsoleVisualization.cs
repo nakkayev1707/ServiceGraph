@@ -5,7 +5,7 @@ using Spectre.Console;
 
 namespace ServiceGraph.Visualization.Core;
 
-public class ConsoleVisualization : IVisualize
+public class ConsoleVisualization
 {
     private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
     private readonly CycleDetector _cycleDetector;

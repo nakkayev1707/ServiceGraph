@@ -1,15 +1,27 @@
 ﻿using System.Reflection;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using QuickGraph;
+using QuickGraph.Graphviz;
+using ServiceGraph.Core;
+using ServiceGraph.Graph;
 
 namespace ServiceGraph.Visualization.Core;
 
 public class HtmlBuilder
 {
     private const string TemplateFileName = "ServiceGraph.Visualization.Core.service-graph.html";
+    private readonly DependencyGraphBuilder _dependencyGraphBuilder;
+    
+    public HtmlBuilder(ServiceGraphOption graphOption, ServiceCollection serviceCollection)
+    {
+        _dependencyGraphBuilder = new DependencyGraphBuilder(serviceCollection, graphOption);
+    }
     
     public async Task<string> BuildAsync()
     {
         StringBuilder htmlBuilder = await ReadTemplateAsync();
+        GraphvizAlgorithm<Type, Edge<Type>> graphviz = _dependencyGraphBuilder.BuildGraph();
             
         var placeholders = new Dictionary<string, string>
         {

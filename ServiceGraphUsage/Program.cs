@@ -25,7 +25,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseServiceGraphUI(new ServiceGraphOption
+    app.UseServiceGraphUI(builder.Services, new ServiceGraphOption
     {
         Namespaces = new []
         {

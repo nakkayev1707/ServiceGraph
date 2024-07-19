@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using ServiceGraph.Core;
 using Spectre.Console;
 
 namespace ServiceGraph.Visualization.Core
@@ -10,10 +12,14 @@ namespace ServiceGraph.Visualization.Core
         private const string RoutePrefix = "service-graph";
         private static bool _informed;
         private readonly RequestDelegate _next;
+        private readonly ServiceGraphOption _graphOption;
+        private readonly ServiceCollection _serviceCollection;
 
-        public ServiceGraphUIMiddleware(RequestDelegate next)
+        public ServiceGraphUIMiddleware(RequestDelegate next, ServiceCollection serviceCollection, ServiceGraphOption graphOption)
         {
             _next = next;
+            _graphOption = graphOption;
+            _serviceCollection = serviceCollection;
         }
 
         public async Task Invoke(HttpContext httpContext)
@@ -45,7 +51,7 @@ namespace ServiceGraph.Visualization.Core
 
             try
             {
-                string htmlTemplate = await new HtmlBuilder().BuildAsync();
+                string htmlTemplate = await new HtmlBuilder(_graphOption, _serviceCollection).BuildAsync();
                 await response.WriteAsync(htmlTemplate, Encoding.UTF8);
             }
             catch (FileNotFoundException)
