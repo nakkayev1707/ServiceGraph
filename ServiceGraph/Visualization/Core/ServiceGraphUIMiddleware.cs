@@ -8,7 +8,7 @@ namespace ServiceGraph.Visualization.Core
     public class ServiceGraphUIMiddleware
     {
         private const string RoutePrefix = "service-graph";
-        private static bool _informed = false;
+        private static bool _informed;
         private readonly RequestDelegate _next;
 
         public ServiceGraphUIMiddleware(RequestDelegate next)

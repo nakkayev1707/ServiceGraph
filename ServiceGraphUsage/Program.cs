@@ -25,7 +25,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseServiceGraph(new ServiceGraphOption
+    app.UseServiceGraphUI(new ServiceGraphOption
     {
         Namespaces = new []
         {
@@ -33,7 +33,6 @@ if (app.Environment.IsDevelopment())
             "ServiceGraphUsage.Services.Abstract"
         }
     });
-    app.UseServiceGraphUI();
 }
 
 app.UseHttpsRedirection();

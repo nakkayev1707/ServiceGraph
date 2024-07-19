@@ -6,14 +6,7 @@ namespace ServiceGraph.Extensions;
 
 public static class ServiceGraphUIExtensions
 {
-    private const string RoutePrefix = "service-graph";
-
-    public static IApplicationBuilder UseServiceGraph(this IApplicationBuilder app, ServiceGraphOption option)
-    {
-        
-    }
-    
-    public static IApplicationBuilder UseServiceGraphUI(this IApplicationBuilder app)
+    public static IApplicationBuilder UseServiceGraphUI(this IApplicationBuilder app,  ServiceGraphOption option)
     {
         return app.UseMiddleware<ServiceGraphUIMiddleware>();
     }
