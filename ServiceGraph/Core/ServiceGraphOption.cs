@@ -1,6 +1,4 @@
-﻿using ServiceGraph.Visualization;
-
-namespace ServiceGraph.Core;
+﻿namespace ServiceGraph.Core;
 
 public class ServiceGraphOption
 {
@@ -9,4 +7,4 @@ public class ServiceGraphOption
     /// If not null all other namespaces will be excluded from scan
     /// </summary>
     public string[] Namespaces { get; set; }
-    public GraphVisualizationOption VisualizationOption { get; set; } }
+}
