@@ -12,7 +12,7 @@ public class HtmlBuilder
     private const string TemplateFileName = "ServiceGraph.Visualization.Core.service-graph.html";
     private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
     
-    public HtmlBuilder(ServiceGraphOption graphOption, ServiceCollection serviceCollection)
+    public HtmlBuilder(ServiceGraphOption? graphOption, ServiceCollection serviceCollection)
     {
         var dependencyGraphBuilder = new DependencyGraphBuilder(serviceCollection, graphOption);
         _graphviz = dependencyGraphBuilder.BuildGraph();
@@ -21,11 +21,14 @@ public class HtmlBuilder
     public async Task<string> BuildAsync()
     {
         StringBuilder htmlBuilder = await ReadTemplateAsync();
+
+        string graphContent = _graphviz.Generate();
+        graphContent = graphContent.Replace("`", "\\`");
         
         var placeholders = new Dictionary<string, string>
         {
             { "{{Title}}", "Service Graph" },
-            { "{{GraphContent}}",  _graphviz.Generate()},
+            { "{{GraphContent}}",  graphContent},
             { "{{CircularDependency}}", CreateCircularDependencyMessage()}
         };
 

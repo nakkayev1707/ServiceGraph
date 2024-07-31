@@ -36,7 +36,20 @@ app.UseServiceGraphUI(builder.Services, new ServiceGraphOption
    }
 });
 
+// or * to include all namespaces 
+
+app.UseServiceGraphUI(builder.Services, new ServiceGraphOption
+{
+  Namespaces = new []
+  {
+      "*"
+  }
+});
+
 ```
+## UI:
+
+<img alt="img.png" height="300" src="img.png"/>
 
 ## Contributing
 
