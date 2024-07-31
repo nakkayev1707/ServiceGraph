@@ -49,7 +49,7 @@ app.UseServiceGraphUI(builder.Services, new ServiceGraphOption
 ```
 ## UI:
 
-![img.png](img.png)
+<img alt="img.png" height="300" src="img.png"/>
 
 ## Contributing
 
