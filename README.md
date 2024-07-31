@@ -47,7 +47,7 @@ app.UseServiceGraphUI(builder.Services, new ServiceGraphOption
 });
 
 ```
-## UI
+## UI:
 
 ![img.png](img.png)
 
