@@ -47,6 +47,9 @@ app.UseServiceGraphUI(builder.Services, new ServiceGraphOption
 });
 
 ```
+## UI
+
+![img.png](img.png)
 
 ## Contributing
 

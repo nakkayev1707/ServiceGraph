@@ -21,11 +21,14 @@ public class HtmlBuilder
     public async Task<string> BuildAsync()
     {
         StringBuilder htmlBuilder = await ReadTemplateAsync();
+
+        string graphContent = _graphviz.Generate();
+        graphContent = graphContent.Replace("`", "\\`");
         
         var placeholders = new Dictionary<string, string>
         {
             { "{{Title}}", "Service Graph" },
-            { "{{GraphContent}}",  _graphviz.Generate()},
+            { "{{GraphContent}}",  graphContent},
             { "{{CircularDependency}}", CreateCircularDependencyMessage()}
         };
 
