@@ -4,20 +4,18 @@ using Microsoft.Extensions.DependencyInjection;
 using QuickGraph;
 using QuickGraph.Graphviz;
 using ServiceGraph.Core;
-using ServiceGraph.Graph;
 
 namespace ServiceGraph.Visualization.Core;
 
 public class HtmlBuilder
 {
     private const string TemplateFileName = "ServiceGraph.Visualization.Core.service-graph.html";
-    private readonly DependencyGraphBuilder _dependencyGraphBuilder;
     private readonly GraphvizAlgorithm<Type, Edge<Type>> _graphviz;
     
     public HtmlBuilder(ServiceGraphOption graphOption, ServiceCollection serviceCollection)
     {
-        _dependencyGraphBuilder = new DependencyGraphBuilder(serviceCollection, graphOption);
-        _graphviz = _dependencyGraphBuilder.BuildGraph();
+        var dependencyGraphBuilder = new DependencyGraphBuilder(serviceCollection, graphOption);
+        _graphviz = dependencyGraphBuilder.BuildGraph();
     }
     
     public async Task<string> BuildAsync()
@@ -28,7 +26,7 @@ public class HtmlBuilder
         {
             { "{{Title}}", "Service Graph" },
             { "{{GraphContent}}",  _graphviz.Generate()},
-            { "{{CircularDependency}}", CheckCircularDependency()}
+            { "{{CircularDependency}}", CreateCircularDependencyMessage()}
         };
 
         foreach (KeyValuePair<string, string> placeholder in placeholders)
@@ -39,7 +37,7 @@ public class HtmlBuilder
         return htmlBuilder.ToString();
     }
 
-    private string CheckCircularDependency()
+    private string CreateCircularDependencyMessage()
     {
         var stringBuilder = new StringBuilder();
         var cycleDetector = new CycleDetector(_graphviz);

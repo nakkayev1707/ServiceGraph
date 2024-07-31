@@ -1,7 +1,7 @@
 ﻿using QuickGraph;
 using QuickGraph.Graphviz;
 
-namespace ServiceGraph.Graph;
+namespace ServiceGraph.Core;
 
 public class CycleDetector
 {

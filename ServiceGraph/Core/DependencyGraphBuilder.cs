@@ -2,9 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using QuickGraph;
 using QuickGraph.Graphviz;
-using ServiceGraph.Core;
 
-namespace ServiceGraph.Graph;
+namespace ServiceGraph.Core;
 
 internal class DependencyGraphBuilder
 {
