@@ -74,6 +74,8 @@ internal class DependencyGraphBuilder
     
     private bool IsCustomNamespace(Type type, string[] customNamespaces)
     {
-        return customNamespaces.Any(ns => type.Namespace != null && type.Namespace.StartsWith(ns));
+        return customNamespaces.Contains("*") 
+               || customNamespaces
+                   .Any(ns => type.Namespace != null && type.Namespace.StartsWith(ns));
     }
 }

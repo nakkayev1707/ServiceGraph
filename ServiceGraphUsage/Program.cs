@@ -28,8 +28,7 @@ if (app.Environment.IsDevelopment())
     {
         Namespaces = new []
         {
-            "ServiceGraphUsage.Services", 
-            "ServiceGraphUsage.Services.Abstract"
+            "*"
         }
     });
 }

@@ -36,6 +36,16 @@ app.UseServiceGraphUI(builder.Services, new ServiceGraphOption
    }
 });
 
+// or * to include all namespaces 
+
+app.UseServiceGraphUI(builder.Services, new ServiceGraphOption
+{
+  Namespaces = new []
+  {
+      "*"
+  }
+});
+
 ```
 
 ## Contributing
